@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\FacebookController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,4 +17,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+require __DIR__ . '/auth.php';
+
+Route::controller(FacebookController::class)->group(function () {
+    Route::get('auth/facebook/redirect', 'redirectToFacebook')->name('auth.facebook');
+    Route::get('auth/facebook/callback', 'FacebookCallback');
 });
